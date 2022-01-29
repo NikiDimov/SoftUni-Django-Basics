@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+</head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<body>
+    <h1>My Todo List</h1>
+    {% if todos %}
+        <div class="container">
+        {% for todo in todos %}
+        <div class="todo">
+            <p>{{ todo.title }}</p>
+            <div class="description">
+                {{ todo.description }}
+            </div>
+            {% if todo.is_done %}
+                <div class="done">DONE</div>
+                {% else %}
+                <div class="open">NOT DONE</div>
+                {% endif %}
+        </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <h2>NO TODOS</h2>
+    {% endif %}
+
+</body>
+</html>
