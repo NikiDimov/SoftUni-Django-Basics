@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from petstagram.main_app.models import PetPhoto, Profile
+from petstagram.main_app.models import PetPhoto, Profile, Pet
 
 
 def get_profile():
@@ -27,7 +27,17 @@ def show_dashboard(request):
 
 
 def show_profile(request):
-    return render(request, 'profile_details.html')
+    profile = get_profile()
+    pets = Pet.objects.filter(user_profile=profile)
+    pet_photos = set(PetPhoto.objects.prefetch_related('tagged_pets').filter(tagged_pets__user_profile=profile))
+    total_likes = sum([pet_photo.likes for pet_photo in pet_photos])
+    context = {
+        'profile': profile,
+        'pets': pets,
+        'pet_photos': pet_photos,
+        'total_likes': total_likes,
+    }
+    return render(request, 'profile_details.html', context)
 
 
 def show_pet_photo_details(request, pk):
