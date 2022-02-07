@@ -19,6 +19,8 @@ def show_home(request):
 
 def show_dashboard(request):
     profile = get_profile()
+    if not profile:
+        return show_401_error(request)
     pet_photos = set(PetPhoto.objects.prefetch_related('tagged_pets').filter(tagged_pets__user_profile=profile))
     context = {
         'pet_photos': pet_photos
@@ -28,6 +30,8 @@ def show_dashboard(request):
 
 def show_profile(request):
     profile = get_profile()
+    if not profile:
+        return show_401_error(request)
     pets = Pet.objects.filter(user_profile=profile)
     pet_photos = set(PetPhoto.objects.prefetch_related('tagged_pets').filter(tagged_pets__user_profile=profile))
     total_likes = sum([pet_photo.likes for pet_photo in pet_photos])
@@ -41,6 +45,9 @@ def show_profile(request):
 
 
 def show_pet_photo_details(request, pk):
+    profile = get_profile()
+    if not profile:
+        return show_401_error(request)
     pet_photo = PetPhoto.objects.prefetch_related('tagged_pets').get(pk=pk)
     context = {
         'pet_photo': pet_photo
@@ -53,3 +60,10 @@ def like_pet_photo(request, pk):
     pet_photo.likes += 1
     pet_photo.save()
     return redirect('photo details', pk)
+
+
+def show_401_error(request):
+    return render(request, '401_error.html')
+
+
+
