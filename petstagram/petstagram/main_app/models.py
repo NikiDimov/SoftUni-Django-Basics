@@ -13,7 +13,7 @@ class Profile(models.Model):
         ('Do not show', 'Do not show'),
     )
     first_name = models.CharField(
-        verbose_name="Name",
+        verbose_name="First Name:",
         max_length=30,
         validators=(
             MinLengthValidator(2),
@@ -21,13 +21,16 @@ class Profile(models.Model):
         )
     )
     last_name = models.CharField(
+        verbose_name="Last Name:",
         max_length=30,
         validators=(
             MinLengthValidator(2),
             only_letters_validator,
         )
     )
-    profile_picture = models.URLField()
+    profile_picture = models.URLField(
+        verbose_name="Link to Profile Picture:"
+    )
     date_of_birth = models.DateField(
         null=True,
         blank=True,
@@ -61,12 +64,13 @@ class Pet(models.Model):
         ("Fish", "Fish"),
         ("Other", "Other"),
     )
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, verbose_name='Pet Name')
     type = models.CharField(
         max_length=max([len(x) for x, _ in TYPE_CHOICES]),
         choices=TYPE_CHOICES,
     )
     date_of_birth = models.DateField(
+        verbose_name='Day of Birth',
         null=True,
         blank=True,
     )
@@ -81,12 +85,12 @@ class Pet(models.Model):
         unique_together = ('user_profile', 'name')
 
     def __str__(self):
-        return f"Pet {self.name}"
+        return self.name
 
 
 class PetPhoto(models.Model):
-    photo = models.ImageField(validators=[validate_file_max_size])
-    tagged_pets = models.ManyToManyField(Pet)
+    photo = models.ImageField(validators=[validate_file_max_size], verbose_name='Pet Image:', upload_to='static/media')
+    tagged_pets = models.ManyToManyField(Pet, verbose_name='Tag Pets:')
     description = models.TextField(
         null=True,
         blank=True,

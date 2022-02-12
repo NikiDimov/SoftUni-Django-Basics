@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 
+from petstagram.main_app.forms import CreateProfileForm, CreatePetForm, CreatePhotoForm
 from petstagram.main_app.models import PetPhoto, Profile, Pet
 
 
@@ -67,15 +68,39 @@ def show_401_error(request):
 
 
 def create_profile(request):
-    return render(request, 'profile_create.html')
+    if request.method == "POST":
+        form = CreateProfileForm(request.POST, instance=Profile())
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = CreateProfileForm(instance=Profile())
+    context = {'form': form}
+    return render(request, 'profile_create.html', context)
 
 
 def add_pet(request):
-    return render(request, 'pet_create.html')
+    if request.method == 'POST':
+        form = CreatePetForm(request.POST, instance=Pet(user_profile=get_profile()))
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = CreatePetForm(instance=Pet())
+    context = {'form': form}
+    return render(request, 'pet_create.html', context)
 
 
 def add_photo(request):
-    return render(request, 'photo_create.html')
+    if request.method == 'POST':
+        form = CreatePhotoForm(request.POST, request.FILES, instance=PetPhoto())
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = CreatePhotoForm(instance=PetPhoto())
+    context = {'form': form}
+    return render(request, 'photo_create.html', context)
 
 
 def edit_photo(request, pk):

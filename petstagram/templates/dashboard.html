@@ -16,9 +16,11 @@
         <div class="row mb-5">
 
             <!-- First Card with Info for the Pet -->
+
             {% for pet_photo in pet_photos %}
             <div class="card ml-3 mb-3" style="width: 18rem;">
                 <!-- Image -->
+
                 <img src="{{ pet_photo.photo }}"
                      class="card-img-top" alt="{{ pet_photo.description }}">
                 <div class="card-body">
