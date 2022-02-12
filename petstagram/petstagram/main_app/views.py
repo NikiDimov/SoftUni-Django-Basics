@@ -66,4 +66,33 @@ def show_401_error(request):
     return render(request, '401_error.html')
 
 
+def create_profile(request):
+    return render(request, 'profile_create.html')
 
+
+def add_pet(request):
+    return render(request, 'pet_create.html')
+
+
+def add_photo(request):
+    return render(request, 'photo_create.html')
+
+
+def edit_photo(request, pk):
+    return render(request, 'photo_edit.html')
+
+
+def edit_pet(request, pk):
+    return render(request, 'pet_edit.html')
+
+
+def delete_pet(request, pk):
+    return render(request, 'pet_delete.html')
+
+
+def edit_profile(request):
+    return render(request, 'profile_edit.html')
+
+
+def delete_profile(request):
+    return render(request, 'profile_delete.html')
