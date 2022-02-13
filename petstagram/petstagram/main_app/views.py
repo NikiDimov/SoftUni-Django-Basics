@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 
-from petstagram.main_app.forms import CreateProfileForm, CreatePetForm, CreatePhotoForm, EditPhotoForm, DeletePetForm
+from petstagram.main_app.forms import CreateProfileForm, CreatePetForm, CreatePhotoForm, EditPhotoForm, DeletePetForm, \
+    EditPetForm
 from petstagram.main_app.models import PetPhoto, Profile, Pet
 
 
@@ -119,12 +120,12 @@ def edit_photo(request, pk):
 def edit_pet(request, pk):
     pet = Pet.objects.get(pk=pk)
     if request.method == 'POST':
-        form = CreatePetForm(request.POST, instance=pet)
+        form = EditPetForm(request.POST, instance=pet)
         if form.is_valid():
             form.save()
             return redirect('profile')
     else:
-        form = CreatePetForm(instance=pet)
+        form = EditPetForm(instance=pet)
     context = {'form': form, 'pet': pet}
     return render(request, 'pet_edit.html', context)
 
@@ -132,11 +133,8 @@ def edit_pet(request, pk):
 def delete_pet(request, pk):
     pet = Pet.objects.get(pk=pk)
     if request.method == 'POST':
-        form = DeletePetForm(request.POST, instance=pet)
-        if form.is_valid():
-            form.save()
-            pet.delete()
-            return redirect('profile')
+        pet.delete()
+        return redirect('profile')
     else:
         form = DeletePetForm(instance=Pet.objects.get(pk=pk))
     context = {'form': form, 'pet': pet}

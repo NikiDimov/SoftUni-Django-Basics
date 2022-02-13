@@ -63,6 +63,12 @@ class EditPhotoForm(forms.ModelForm):
         }
 
 
-class DeletePetForm(CreatePetForm):
+class EditPetForm(CreatePetForm):
     pass
 
+
+class DeletePetForm(CreatePetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.disabled = True
