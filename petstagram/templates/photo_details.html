@@ -25,7 +25,7 @@
             <!-- Likes Counter -->
             <p class="mt-2">Likes: {{ pet_photo.likes }}</p>
             <!-- Buttons -->
-            <a href="#" class="btn btn-primary">Edit</a>
+            <a href="{% url 'edit photo' pet_photo.pk %}" class="btn btn-primary">Edit</a>
             <a href="#" class="btn btn-danger">Delete</a>
         </div>
     </div>

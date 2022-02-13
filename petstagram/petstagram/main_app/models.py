@@ -89,7 +89,7 @@ class Pet(models.Model):
 
 
 class PetPhoto(models.Model):
-    photo = models.ImageField(validators=[validate_file_max_size], verbose_name='Pet Image:', upload_to='static/media')
+    photo = models.ImageField(validators=[validate_file_max_size], verbose_name='Pet Image:')
     tagged_pets = models.ManyToManyField(Pet, verbose_name='Tag Pets:')
     description = models.TextField(
         null=True,
