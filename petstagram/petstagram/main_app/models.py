@@ -64,13 +64,13 @@ class Pet(models.Model):
         ("Fish", "Fish"),
         ("Other", "Other"),
     )
-    name = models.CharField(max_length=30, verbose_name='Pet Name')
+    name = models.CharField(max_length=30, verbose_name='Pet Name:')
     type = models.CharField(
         max_length=max([len(x) for x, _ in TYPE_CHOICES]),
         choices=TYPE_CHOICES,
     )
     date_of_birth = models.DateField(
-        verbose_name='Day of Birth',
+        verbose_name='Day of Birth:',
         null=True,
         blank=True,
     )

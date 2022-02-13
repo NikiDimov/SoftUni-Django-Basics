@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from petstagram.main_app.forms import CreateProfileForm, CreatePetForm, CreatePhotoForm, EditPhotoForm
+from petstagram.main_app.forms import CreateProfileForm, CreatePetForm, CreatePhotoForm, EditPhotoForm, DeletePetForm
 from petstagram.main_app.models import PetPhoto, Profile, Pet
 
 
@@ -104,23 +104,43 @@ def add_photo(request):
 
 
 def edit_photo(request, pk):
+    photo = PetPhoto.objects.get(pk=pk)
     if request.method == 'POST':
-        form = EditPhotoForm(request.POST, instance=PetPhoto.objects.get(pk=pk))
+        form = EditPhotoForm(request.POST, instance=photo)
         if form.is_valid():
             form.save()
             return redirect('photo details', pk)
     else:
-        form = EditPhotoForm(instance=PetPhoto.objects.get(pk=pk))
-    context = {'form': form, 'photo': PetPhoto.objects.get(pk=pk)}
+        form = EditPhotoForm(instance=photo)
+    context = {'form': form, 'photo': photo}
     return render(request, 'photo_edit.html', context)
 
 
 def edit_pet(request, pk):
-    return render(request, 'pet_edit.html')
+    pet = Pet.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = CreatePetForm(request.POST, instance=pet)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = CreatePetForm(instance=pet)
+    context = {'form': form, 'pet': pet}
+    return render(request, 'pet_edit.html', context)
 
 
 def delete_pet(request, pk):
-    return render(request, 'pet_delete.html')
+    pet = Pet.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = DeletePetForm(request.POST, instance=pet)
+        if form.is_valid():
+            form.save()
+            pet.delete()
+            return redirect('profile')
+    else:
+        form = DeletePetForm(instance=Pet.objects.get(pk=pk))
+    context = {'form': form, 'pet': pet}
+    return render(request, 'pet_delete.html', context)
 
 
 def edit_profile(request):

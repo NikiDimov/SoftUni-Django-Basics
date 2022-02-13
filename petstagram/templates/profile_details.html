@@ -42,8 +42,8 @@
             <div style="width: 18rem;">
                 <h5>{{ pet.name }}</h5>
                 <p class="mt-2">Age: {% if pet.date_of_birth %}{{ pet.age }}{% endif %}</p>
-                <a href="#" class="btn btn-primary">Edit</a>
-                <a href="#" class="btn btn-danger">Delete</a>
+                <a href="{% url 'edit pet' pet.pk %}" class="btn btn-primary">Edit</a>
+                <a href="{% url 'delete pet' pet.pk %}" class="btn btn-danger">Delete</a>
             </div>
             {% endfor %}
         </div>

@@ -61,3 +61,8 @@ class EditPhotoForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'tagged_pets': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
+
+
+class DeletePetForm(CreatePetForm):
+    pass
+
