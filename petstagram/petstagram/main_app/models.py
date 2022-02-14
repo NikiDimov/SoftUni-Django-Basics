@@ -35,10 +35,7 @@ class Profile(models.Model):
         null=True,
         blank=True,
     )
-    description = models.TextField(
-        null=True,
-        blank=True,
-    )
+
     email = models.EmailField(
         validators=(EmailValidator,),
         null=True,
@@ -47,6 +44,10 @@ class Profile(models.Model):
     gender = models.CharField(
         max_length=max([len(x) for x, _ in GENDER_CHOICES]),
         choices=GENDER_CHOICES,
+        null=True,
+        blank=True,
+    )
+    description = models.TextField(
         null=True,
         blank=True,
     )

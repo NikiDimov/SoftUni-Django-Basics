@@ -72,3 +72,25 @@ class DeletePetForm(CreatePetForm):
         super().__init__(*args, **kwargs)
         for _, field in self.fields.items():
             field.disabled = True
+
+
+class EditProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.initial['gender'] = 'Do not show'
+
+    class Meta:
+        model = Profile
+        fields = "__all__"
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'profile_picture': forms.TextInput(attrs={'class': 'form-control'}),
+            'date_of_birth': forms.SelectDateWidget(attrs={'class': 'form-control'},
+                                                    years=range(1920, datetime.datetime.now().year)),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter email'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(
+                attrs={'class': 'form-control', 'placeholder': 'Enter description', 'rows': 3})
+
+        }
