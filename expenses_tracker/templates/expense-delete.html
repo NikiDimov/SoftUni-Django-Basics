@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="body">
+    <h1>Delete Expense</h1>
+
+    <!-- Delete Expense Form -->
+    <div class="form">
+        <form method="POST" action="{% url 'delete expense' expense.id %}">
+            {% csrf_token %}
+            {{ form }}
+
+            <!-- Delete Button -->
+            <input type="submit" value="Delete">
+        </form>
+        <!-- End Delete Expense Form -->
+
+    </div>
+</div>
+{% endblock %}
