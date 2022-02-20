@@ -94,3 +94,15 @@ class EditProfileForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'placeholder': 'Enter description', 'rows': 3})
 
         }
+
+
+class DeleteProfileForm(forms.ModelForm):
+    def save(self, commit=True):
+        pets = list(self.instance.pet_set.all())
+        PetPhoto.objects.filter(tagged_pets__in=pets).delete()
+        self.instance.delete()
+        return self.instance
+
+    class Meta:
+        model = Profile
+        fields = ()
