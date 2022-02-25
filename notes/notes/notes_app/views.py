@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from notes.notes_app.forms import AddNoteForm, EditNoteForm, CreateProfileForm, DeleteNoteForm
+from notes.notes_app.forms import AddNoteForm, EditNoteForm, CreateProfileForm, DeleteNoteForm, DeleteProfileForm
 from notes.notes_app.models import Profile, Note
 
 
@@ -60,11 +60,25 @@ def delete_note(request, pk):
 
 
 def note_details(request, pk):
-    pass
+    note = Note.objects.get(pk=pk)
+    context = {'note': note}
+    return render(request, 'note-details.html', context)
 
 
 def profile_page(request):
-    pass
+    user = get_profile()
+    notes_count = Note.objects.count()
+    notes = Note.objects.all()
+    if request.method == 'POST':
+        form = DeleteProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            notes.delete()
+            return redirect('show index')
+    else:
+        form = DeleteProfileForm(instance=user)
+        context = {'user': user, 'notes_count': notes_count, 'form': form}
+        return render(request, 'profile.html', context)
 
 
 def create_profile(request):

@@ -9,6 +9,10 @@ class Profile(models.Model):
     age = models.IntegerField()
     image_url = models.URLField()
 
+    @property
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
+
 
 class Note(models.Model):
     TITLE_MAX_LEN = 30

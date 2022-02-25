@@ -7,6 +7,7 @@ class CreateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
+        labels = {'first_name': 'First Name', 'last_name': 'Last Name', 'image_url': 'Link to Profile Image'}
 
 
 class AddNoteForm(forms.ModelForm):
@@ -35,3 +36,13 @@ class DeleteNoteForm(forms.ModelForm):
     class Meta:
         model = Note
         fields = ('title', 'content', 'image_url')
+
+
+class DeleteProfileForm(forms.ModelForm):
+    def save(self, commit=True):
+        self.instance.delete()
+        return self.instance
+
+    class Meta:
+        model = Profile
+        fields = ()
