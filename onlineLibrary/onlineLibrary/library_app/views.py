@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from onlineLibrary.library_app.forms import CreateProfileForm, AddBookForm, DeleteBookForm, EditBookForm, \
-    EditProfileForm
+    EditProfileForm, DeleteProfileForm
 from onlineLibrary.library_app.models import Profile, Book
 
 
@@ -99,7 +99,13 @@ def edit_profile(request):
         return render(request, 'edit-profile.html', context)
 
 
-
-
 def delete_profile(request):
-    pass
+    if request.method == 'POST':
+        form = DeleteProfileForm(request.POST, instance=get_profile())
+        if form.is_valid():
+            form.save()
+            return redirect('show index')
+    else:
+        form = DeleteProfileForm(instance=get_profile())
+        context = {'form': form}
+        return render(request, 'delete-profile.html', context)

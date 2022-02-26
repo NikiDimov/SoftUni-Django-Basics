@@ -7,7 +7,6 @@ class CreateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        labels = {'first_name': 'First Name', 'last_name': 'Last Name', 'image_url': 'Image URL'}
         widgets = {
             'first_name': forms.TextInput(attrs={'placeholder': 'First Name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Last Name'}),
@@ -53,4 +52,20 @@ class EditProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
-        labels = {'first_name': 'First Name', 'last_name': 'Last Name', 'image_url': 'Image URL'}
+
+
+class DeleteProfileForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for _, field in self.fields.items():
+            field.widget.attrs['disabled'] = 'disabled'
+            field.required = False
+
+    def save(self, commit=True):
+        self.instance.delete()
+        return self.instance
+
+    class Meta:
+        model = Profile
+        fields = '__all__'
+
